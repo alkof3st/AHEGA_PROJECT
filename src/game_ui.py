@@ -20,6 +20,19 @@ class TamagotchiApp(tk.Tk):
         self.coins_label = ttk.Label(top, text="Монеты: 50"); self.coins_label.grid(row=1, column=4)
         self.canvas = tk.Canvas(self, width=420, height=420, bg='white'); self.canvas.pack()
         self.canvas.bind("<Button-1>", self.on_click)
+        bottom = tk.Frame(self); bottom.pack(fill=tk.X)
+        tk.Button(bottom, text="Покормить", command=self.feed).pack(side=tk.LEFT)
+        tk.Button(bottom, text="Помыть", command=self.wash).pack(side=tk.LEFT)
+        tk.Button(bottom, text="Спать", command=self.sleep).pack(side=tk.LEFT)
+        tk.Button(bottom, text="Парк", command=self.park).pack(side=tk.LEFT)
+    def feed(self): self.pet.feed(); self.update_bars()
+    def wash(self): self.pet.wash(); self.update_bars()
+    def sleep(self): self.pet.sleep(); self.update_bars()
+    def park(self): self.pet.play(); self.update_bars()
+    def update_bars(self):
+        for attr, bar in self.bars.items():
+            bar['value'] = getattr(self.pet, attr)
+        self.coins_label.config(text=f"Монеты: {self.pet.coins}")
     def draw_room(self):
         self.canvas.delete("all")
         for i in range(7):
